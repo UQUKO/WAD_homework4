@@ -1,9 +1,12 @@
 <template>
   <div>
     <nav>
-      <router-link to="/api/allposts">Posts</router-link> |
-      <router-link to="/api/addpost">Add a Post</router-link> |
-      <router-link to="/api/signup">SignUp</router-link>|
+      <router-link to="/api/allposts">Posts</router-link>
+      <span class="separator"></span>
+      <router-link to="/api/addpost">Add a Post</router-link>
+      <span class="separator"></span>
+      <router-link to="/api/signup">Signup</router-link>
+      <span class="separator"></span>
       <router-link to="/api/login">Login</router-link>
     </nav>
     <router-view />
@@ -46,15 +49,28 @@ export default {
 
 nav {
   padding: 30px;
+  background-color: #e0e0e0;
 }
 
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none;
+  padding: 8px 15px;
+  font-size: 1.25em;
+}
+
+nav .separator {
+  width: 3px;
+  height: 1.5em;
+  background-color: #2c3e50;
+  margin: 0 10px;
+  display: inline-block;
+  transform: translateY(5px);
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #fff9df;
 }
 button {
   margin-top: 30px;

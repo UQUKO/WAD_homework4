@@ -25,8 +25,8 @@ app.post("/api/posts", async (req, res) => {
     console.log("a post request has arrived");
     const post = req.body;
     const newpost = await pool.query(
-      "INSERT INTO posttable(title, body, urllink) values ($1, $2, $3)    RETURNING*",
-      [post.title, post.body, post.urllink]
+      "INSERT INTO posttable(body) VALUES ($1) RETURNING*",
+      [post.body]
     );
     res.json(newpost);
   } catch (err) {
@@ -63,24 +63,10 @@ app.put("/api/posts/:id", async (req, res) => {
     const post = req.body;
     console.log("update request has arrived");
     const updatepost = await pool.query(
-      "UPDATE posttable SET (title, body, urllink) = ($2, $3, $4) WHERE id = $1 RETURNING*",
-      [id, post.title, post.body, post.urllink]
+      "UPDATE posttable SET body = $2 WHERE id = $1 RETURNING*",
+      [id, post.body]
     );
     res.json(updatepost);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.delete("/api/posts/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log("delete a post request has arrived");
-    const deletepost = await pool.query(
-      "DELETE FROM posttable WHERE id = $1 RETURNING*",
-      [id]
-    );
-    res.json(deletepost);
   } catch (err) {
     console.error(err.message);
   }

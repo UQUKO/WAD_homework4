@@ -1,16 +1,16 @@
 <template>
   <div class="AllPosts">
     <div id="post-list">
-      <h1>All Posts</h1>
       <div class="container">
         <button @click="Logout" class="center">Logout</button>
       </div>
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
           <a class="singlepost" :href="'/api/apost/' + post.id">
-            <span class="title"> <b>Title:</b> {{ post.title }} </span><br />
-            <span class="body"> <b>Body:</b> {{ post.body }} </span> <br />
-            <span class="url"> <b>Url:</b> {{ post.urllink }} </span> <br />
+            <div class="post-header">
+              <span class="date">{{ formatDate(post.date) }}</span>
+            </div>
+            <span class="body">{{ post.body }} </span>
           </a>
         </div>
       </ul>
@@ -33,6 +33,14 @@ export default {
         .then((data) => (this.posts = data))
         .catch((err) => console.log(err.message));
     },
+    formatDate(dateString) {
+      if (!dateString) return "";
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    },
   },
   mounted() {
     this.fetchPosts();
@@ -42,33 +50,58 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 20px;
-}
 a {
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }
+
 .item {
-  background: rgb(189, 212, 199);
+  background: #f0f0f0;
   margin-bottom: 5px;
-  padding: 3px 5px;
+  padding: 10px;
   border-radius: 10px;
+  height: 100px;
 }
+
+.singlepost {
+  display: block;
+  position: relative;
+  color: black;
+}
+
+.body {
+  margin-top: 35px;
+  margin-left: 10px;
+  font-size: 1.2em;
+  text-align: left;
+  display: block;
+}
+
+.post-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.date {
+  font-size: 1em;
+}
+
 #post-list {
-  background: #6e8b97;
-  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
   padding: 10px 20px;
   margin: auto;
   width: 50%;
   border-radius: 20px;
 }
+
 #post-list ul {
   padding: 0;
 }
+
 #post-list li {
   display: inline-block;
   margin-right: 10px;
