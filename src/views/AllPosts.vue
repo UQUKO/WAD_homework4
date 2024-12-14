@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       posts: [],
+      isAuthenticated: false,
     };
   },
   methods: {
@@ -68,10 +69,38 @@ export default {
           console.error("Error deleting posts:", e);
         });
     },
+    Logout() {
+      fetch("http://localhost:3000/auth/logout", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Logout user: ", data);
+          this.isAuthenticated = false;
+          this.$router.push("/api/login");
+        })
+        .catch((e) => {
+          console.error("Error logging out: ", e);
+        });
+    },
+    isAuth() {
+      this.isAuthenticated = !!document.cookie.match(
+        /^(.*;)?\s*jwt\s*=\s*[^;]+(.*)?$/
+      ); //checks whether the user has a cookie with the jwt tag
+    },
   },
   mounted() {
-    this.fetchPosts();
-    console.log("mounted");
+    this.isAuth();
+    if (this.isAuthenticated) {
+      this.fetchPosts();
+      console.log("mounted");
+    }
   },
 };
 </script>
