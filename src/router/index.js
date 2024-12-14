@@ -4,12 +4,18 @@ import APost from "../views/APost.vue";
 import AddPost from "../views/AddPost.vue";
 import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
+import ContactsComponent from "../components/ContactsComponent.vue";
 
 const routes = [
   {
     path: "/",
     name: "AllPosts",
     component: () => import("../views/AllPosts.vue"),
+  },
+  {
+    path: "/api/contacts",
+    name: "Contacts",
+    component: ContactsComponent,
   },
   {
     path: "/api/allposts",

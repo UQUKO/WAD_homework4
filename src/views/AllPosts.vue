@@ -15,11 +15,13 @@
         </div>
       </ul>
     </div>
-    <div class="container">
-      <button @click="this.$router.push('/api/addpost')" class="left">
-        Add post
-      </button>
-      <button @click="DeleteAll" class="right">Delete all</button>
+    <div class="button-row">
+      <div class="container left">
+        <button @click="this.$router.push('/api/addpost')">Add post</button>
+      </div>
+      <div class="container right">
+        <button @click="DeleteAll">Delete all</button>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +85,10 @@ a:hover {
   text-decoration: underline;
 }
 
+.container:hover {
+  text-decoration: underline;
+}
+
 .item {
   background: #f0f0f0;
   margin-bottom: 5px;
@@ -133,5 +139,27 @@ a:hover {
   margin-top: 10px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.7);
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.container.left,
+.container.right {
+  flex: 1;
+}
+.container.left {
+  display: flex;
+  justify-content: flex-start;
+}
+.container.right {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
