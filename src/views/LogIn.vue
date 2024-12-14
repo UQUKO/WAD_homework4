@@ -5,8 +5,9 @@
     <input type="email" name="email" required v-model="email" />
     <label for="password">Password</label>
     <input type="password" name="password" required v-model="password" />
+    <div v-if="errMsg">{{ errMsg }}</div>
     <div class="container">
-      <button @click="Login" class="center">Login</button>
+      <button @click="LogIn" class="center">Login</button>
       <button @click="this.$router.push('/api/signup')" class="center">
         Signup
       </button>
@@ -21,6 +22,7 @@ export default {
     return {
       email: "",
       password: "",
+      errMsg: "",
     };
   },
   methods: {
@@ -37,14 +39,21 @@ export default {
         credentials: "include",
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((err) => {
+              throw new Error(err.message || "Login failed");
+            });
+          }
+          return response.json();
+        })
         .then((data) => {
           console.log(data);
-          location.assign("/");
+          this.$router.push("/");
         })
         .catch((e) => {
           console.log(e);
-          console.log("error");
+          this.errMsg = e.message || "Login failed. Please try again";
         });
     },
   },
@@ -90,6 +99,9 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+button:hover {
+  background-color: #cdbf88;
 }
 .center {
   margin: auto;

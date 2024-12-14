@@ -53,14 +53,19 @@ export default {
         credentials: "include",
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Signup failed");
+          }
+          return response.json();
+        })
         .then((data) => {
           console.log(data);
-          this.$router.push("/");
+          this.$router.push("/login");
         })
         .catch((e) => {
           console.log(e);
-          console.log("error");
+          this.errMsg = "Signup failed. User may already exist";
         });
     },
   },
@@ -106,6 +111,9 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+button:hover {
+  background-color: #cdbf88;
 }
 div {
   padding: 10px 20px;
