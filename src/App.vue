@@ -1,9 +1,7 @@
 <template>
   <div>
     <nav>
-      <router-link to="/api/allposts">Posts</router-link>
-      <span class="separator"></span>
-      <router-link to="/api/addpost">Add a Post</router-link>
+      <router-link to="/api/allposts">Home</router-link>
       <span class="separator"></span>
       <router-link to="/api/signup">Signup</router-link>
       <span class="separator"></span>
@@ -25,9 +23,9 @@ export default {
         .then((data) => {
           console.log(data);
           console.log("jwt removed");
-          //console.log('jwt removed:' + auth.authenticated());
+          //console.log("jwt removed:" + auth.authenticated());
           this.$router.push("/login");
-          //location.assign("/");
+          location.assign("/");
         })
         .catch((e) => {
           console.log(e);

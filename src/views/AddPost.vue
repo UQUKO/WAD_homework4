@@ -30,7 +30,10 @@ export default {
         body: JSON.stringify(data),
       })
         .then((response) => {
-          console.log(response.data);
+          return response.json(); // Parse the JSON response
+        })
+        .then((data) => {
+          console.log("Inserted post:", data); // Log the inserted post
           this.$router.push("/api/allposts");
         })
         .catch((e) => {

@@ -15,6 +15,12 @@
         </div>
       </ul>
     </div>
+    <div class="container">
+      <button @click="this.$router.push('/api/addpost')" class="left">
+        Add post
+      </button>
+      <button @click="DeleteAll" class="right">Delete all</button>
+    </div>
   </div>
 </template>
 
@@ -40,6 +46,25 @@ export default {
         month: "short",
         day: "numeric",
       });
+    },
+    DeleteAll() {
+      fetch(`http://localhost:3000/api/posts/`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`); // Handle HTTP errors
+          }
+          return response.json(); // Parse the JSON response
+        })
+        .then((data) => {
+          console.log("Deleted posts:", data);
+          this.posts = []; // Clear posts array after deletion
+        })
+        .catch((e) => {
+          console.error("Error deleting posts:", e);
+        });
     },
   },
   mounted() {

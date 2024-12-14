@@ -28,7 +28,7 @@ app.post("/api/posts", async (req, res) => {
       "INSERT INTO posttable(body) VALUES ($1) RETURNING*",
       [post.body]
     );
-    res.json(newpost);
+    res.json(newpost.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
@@ -38,6 +38,7 @@ app.get("/api/posts", async (req, res) => {
   try {
     console.log("get posts request has arrived");
     const posts = await pool.query("SELECT * FROM posttable");
+    console.log(posts.rows);
     res.json(posts.rows);
   } catch (err) {
     console.error(err.message);
@@ -69,6 +70,31 @@ app.put("/api/posts/:id", async (req, res) => {
     res.json(updatepost);
   } catch (err) {
     console.error(err.message);
+  }
+});
+
+app.delete("/api/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("delete a post request has arrived");
+    const deletepost = await pool.query(
+      "DELETE FROM posttable WHERE id = $1 RETURNING*",
+      [id]
+    );
+    res.json(deletepost);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.delete("/api/posts/", async (req, res) => {
+  try {
+    console.log("Delete all posts request has arrived");
+    const deleteAllPosts = await pool.query("DELETE FROM posttable RETURNING*");
+    res.json(deleteAllPosts.rowCount);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 
