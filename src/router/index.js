@@ -4,7 +4,7 @@ import APost from "../views/APost.vue";
 import AddPost from "../views/AddPost.vue";
 import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
-import Contacts from "../components/Contacts.vue";
+import ContactsComponent from "../components/ContactsComponent.vue";
 
 const routes = [
   {
@@ -13,9 +13,9 @@ const routes = [
     component: () => import("../views/AllPosts.vue"),
   },
   {
-    path: '/api/contacts',
-    name: 'Contacts',
-    component: Contacts,
+    path: "/api/contacts",
+    name: "Contacts",
+    component: ContactsComponent,
   },
   {
     path: "/api/allposts",
