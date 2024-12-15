@@ -61,7 +61,7 @@ export default {
         })
         .then((data) => {
           console.log(data);
-          this.$router.push("/login");
+          this.$router.push("/api/login");
         })
         .catch((e) => {
           console.log(e);

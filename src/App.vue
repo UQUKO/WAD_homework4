@@ -3,10 +3,6 @@
     <nav>
       <router-link to="/api/allposts">Home</router-link>
       <span class="separator"></span>
-      <router-link to="/api/signup">Signup</router-link>
-      <span class="separator"></span>
-      <router-link to="/api/login">Login</router-link>
-      <span class="separator"></span>
       <router-link to="/api/contacts">Contacts</router-link>
     </nav>
     <router-view />
