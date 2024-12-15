@@ -20,6 +20,7 @@ export default {
       post: {
         id: "",
         body: "",
+        isAuthenticated: false,
       },
     };
   },

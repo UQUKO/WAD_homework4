@@ -164,6 +164,9 @@ a:hover {
   margin-left: auto;
   margin-right: auto;
 }
+button:hover {
+  background-color: #cdbf88;
+}
 .container.left,
 .container.right {
   flex: 1;
