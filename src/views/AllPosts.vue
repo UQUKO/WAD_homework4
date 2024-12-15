@@ -100,6 +100,8 @@ export default {
     if (this.isAuthenticated) {
       this.fetchPosts();
       console.log("mounted");
+    } else {
+      this.$router.push("/api/login");
     }
   },
 };
@@ -178,6 +180,9 @@ a:hover {
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
+}
+button:hover {
+  background-color: #cdbf88;
 }
 .container.left,
 .container.right {

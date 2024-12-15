@@ -20,6 +20,7 @@ export default {
       post: {
         id: "",
         body: "",
+        isAuthenticated: false,
       },
     };
   },
@@ -60,8 +61,18 @@ export default {
         });
     },
   },
+  isAuth() {
+    this.isAuthenticated = !!document.cookie.match(
+      /^(.*;)?\s*jwt\s*=\s*[^;]+(.*)?$/
+    ); //checks whether the user has a cookie with the jwt tag
+  },
   mounted() {
-    this.fetchAPost(this.$route.params.id);
+    this.isAuth;
+    if (this.isAuthenticated) {
+      this.fetchAPost(this.$route.params.id);
+    } else {
+      this.$router.push("/api/login");
+    }
   },
 };
 </script>
