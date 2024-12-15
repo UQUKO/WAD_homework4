@@ -6,7 +6,9 @@
     <label for="password">Password</label>
     <input type="password" name="password" required v-model="password" />
     <div v-if="errMsg">{{ errMsg }}</div>
-    <button @click="SignUp" class="Signup">Signup</button>
+    <button @click="SignUp" class="Signup" :disabled="!isFormValid">
+      Signup
+    </button>
   </div>
 </template>
 
@@ -18,6 +20,7 @@ export default {
       email: "",
       password: "",
       errMsg: "",
+      isFormValid: false,
     };
   },
   watch: {
@@ -25,8 +28,22 @@ export default {
       this.password = value;
       this.validatePassword(value);
     },
+    email(value) {
+      this.email = value;
+      this.validateEmail(value);
+    },
   },
   methods: {
+    validateEmail(value) {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //Pattern meaning: there is a character at the start of the string before the @ -> it contains an @ -> contains . after the @ -> a char after the .
+      if (!emailPattern.test(value)) {
+        this.errMsg = "Please enter a valid email address";
+        this.isFormValid = false;
+      } else {
+        this.errMsg = "";
+        this.isFormValid = true;
+      }
+    },
     validatePassword(value) {
       if (
         value.length < 8 ||
@@ -36,8 +53,10 @@ export default {
       ) {
         this.errMsg =
           "Password must be at least 8 characters  and less than 16 characters, it must include a capital letter and at least one number";
+        this.isFormValid = false;
       } else {
         this.errMsg = "";
+        this.isFormValid = true;
       }
     },
     SignUp() {
