@@ -20,15 +20,17 @@ export default {
       post: {
         id: "",
         body: "",
-        isAuthenticated: false,
       },
+      isAuthenticated: false,
     };
   },
   methods: {
     fetchAPost(id) {
       fetch(`http://localhost:3000/api/posts/${id}`)
         .then((response) => response.json())
-        .then((data) => (this.post = data))
+        .then((data) => {
+          this.post = data;
+        })
         .catch((err) => console.log(err.message));
     },
     updatePost() {
@@ -60,18 +62,19 @@ export default {
           console.log(e);
         });
     },
-  },
-  isAuth() {
-    this.isAuthenticated = !!document.cookie.match(
-      /^(.*;)?\s*jwt\s*=\s*[^;]+(.*)?$/
-    ); //checks whether the user has a cookie with the jwt tag
+    isAuth() {
+      this.isAuthenticated = !!document.cookie.match(
+        /^(.*;)?\s*jwt\s*=\s*[^;]+(.*)?$/
+        //checks whether the user has a cookie with the jwt tag
+      );
+    },
   },
   mounted() {
-    this.isAuth;
-    if (this.isAuthenticated) {
-      this.fetchAPost(this.$route.params.id);
-    } else {
+    this.isAuth();
+    if (!this.isAuthenticated) {
       this.$router.push("/api/login");
+    } else {
+      this.fetchAPost(this.$route.params.id);
     }
   },
 };
@@ -81,17 +84,17 @@ export default {
 #form {
   max-width: 420px;
   margin: 30px auto;
-  background: rgb(167, 154, 154);
+  background: #f0f0f0;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
 }
 h3 {
   text-align: center;
-  color: rgb(8, 110, 110);
+  color: black;
 }
 label {
-  color: rgb(8, 110, 110);
+  color: black;
   display: inline-block;
   margin: 25px 0 15px;
   font-size: 0.8em;
@@ -106,15 +109,18 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: blue;
+  color: black;
 }
 button {
-  background: rgb(8, 110, 110);
+  background: #fee996;
   border: 0;
   padding: 10px 20px;
   margin-top: 20px;
-  color: white;
+  color: black;
   border-radius: 20px;
+}
+button:hover {
+  background-color: #cdbf88;
 }
 .container {
   display: flex;

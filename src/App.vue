@@ -16,6 +16,7 @@
 <script>
 export default {
   name: "App",
+  isAuthenticated: false,
   methods: {
     Logout() {
       fetch("http://localhost:3000/auth/logout", {

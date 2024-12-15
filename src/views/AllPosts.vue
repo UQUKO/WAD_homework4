@@ -115,11 +115,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
-
-.container:hover {
-  text-decoration: underline;
-}
-
 .item {
   background: #f0f0f0;
   margin-bottom: 5px;
