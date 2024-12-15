@@ -34,7 +34,7 @@ export default {
         })
         .then((data) => {
           console.log("Inserted post:", data); // Log the inserted post
-          this.$router.push("/api/allposts");
+          this.$router.push("/api/home");
         })
         .catch((e) => {
           console.log(e);
@@ -84,5 +84,8 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+button:hover {
+  background-color: #cdbf88;
 }
 </style>

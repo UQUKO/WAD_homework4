@@ -20,7 +20,7 @@ const routes = [
     component: ContactsComponent,
   },
   {
-    path: "/api/allposts",
+    path: "/api/home",
     name: "AllPosts",
     component: AllPosts,
     meta: { requiresAuth: true }, // Protect this route

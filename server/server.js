@@ -15,9 +15,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 const secret = "gdgdhdbcb770785rgdzqws";
-const maxAge = 60 * 60;
+const maxAgeForToken = 60 * 60;
 const generateJWT = (id) => {
-  return jwt.sign({ id }, secret, { expiresIn: maxAge });
+  return jwt.sign({ id }, secret, { expiresIn: maxAgeForToken });
 };
 
 app.post("/api/posts", async (req, res) => {
@@ -38,7 +38,6 @@ app.get("/api/posts", async (req, res) => {
   try {
     console.log("get posts request has arrived");
     const posts = await pool.query("SELECT * FROM posttable");
-    console.log(posts.rows);
     res.json(posts.rows);
   } catch (err) {
     console.error(err.message);
@@ -47,7 +46,7 @@ app.get("/api/posts", async (req, res) => {
 
 app.get("/api/posts/:id", async (req, res) => {
   try {
-    console.log("get a post with route parameter  request has arrived");
+    console.log("get a post with route parameter request has arrived");
     const { id } = req.params;
     const posts = await pool.query("SELECT * FROM posttable WHERE id = $1", [
       id,
@@ -100,9 +99,8 @@ app.delete("/api/posts/", async (req, res) => {
 
 // is used to check whether a user is authinticated
 app.get("/auth/authenticate", async (req, res) => {
-  console.log("authentication request has been arrived");
+  console.log("authentication request has arrived");
   const token = req.cookies.jwt; // assign the token named jwt to the token const
-  //console.log("token " + token);
   let authenticated = false; // a user is not authenticated until proven the opposite
   try {
     if (token) {
@@ -111,7 +109,7 @@ app.get("/auth/authenticate", async (req, res) => {
       await jwt.verify(token, secret, (err) => {
         //token exists, now we try to verify it
         if (err) {
-          // not verified, redirect to login page
+          // not verified
           console.log(err.message);
           console.log("token is not verified");
           res.send({ authenticated: authenticated }); // authenticated = false
@@ -125,7 +123,7 @@ app.get("/auth/authenticate", async (req, res) => {
     } else {
       //applies when the token does not exist
       console.log("author is not authenticated");
-      console.log("token doesn't exist", authenticated);
+      console.log("token doesn't exist");
       res.send({ authenticated: authenticated }); // authenticated = false
     }
   } catch (err) {
@@ -138,18 +136,28 @@ app.post("/auth/signup", async (req, res) => {
   try {
     console.log("a signup request has arrived");
     const { email, password } = req.body;
+
+    const existingUser = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
     const salt = await bcrypt.genSalt();
     const bcryptPassword = await bcrypt.hash(password, salt);
     const authUser = await pool.query(
       "INSERT INTO users(email, password) values ($1, $2) RETURNING*",
       [email, bcryptPassword]
     );
+
     console.log(authUser.rows[0].id);
     const token = await generateJWT(authUser.rows[0].id);
     res
       .status(201)
       .cookie("jwt", token, {
-        maxAge: 6000000,
+        maxAge: maxAgeForToken * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
@@ -177,7 +185,7 @@ app.post("/auth/login", async (req, res) => {
     res
       .status(201)
       .cookie("jwt", token, {
-        maxAge: 6000000,
+        maxAge: maxAgeForToken * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",

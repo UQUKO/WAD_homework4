@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav>
-      <router-link to="/api/allposts">Home</router-link>
+      <router-link to="/api/home">Home</router-link>
       <span class="separator"></span>
       <router-link to="/api/contacts">Contacts</router-link>
     </nav>
@@ -22,8 +22,7 @@ export default {
         .then((data) => {
           console.log(data);
           console.log("jwt removed");
-          //console.log("jwt removed:" + auth.authenticated());
-          this.$router.push("/login");
+          this.$router.push("/api/login");
           location.assign("/");
         })
         .catch((e) => {

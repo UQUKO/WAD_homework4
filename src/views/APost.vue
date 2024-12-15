@@ -43,7 +43,7 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
-          this.$router.push("/api/allposts");
+          this.$router.push("/api/home");
         })
         .catch((e) => {
           console.log(e);
@@ -56,7 +56,7 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
-          this.$router.push("/api/allposts");
+          this.$router.push("/api/home");
         })
         .catch((e) => {
           console.log(e);
